@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>المؤسسة المصرية الوطنية والتنمية وحقوق الإنسان بالسويس</title>
+<meta name="description" content="الموقع الرسمي للمؤسسة المصرية الوطنية والتنمية وحقوق الإنسان بالسويس - مشهرة برقم 810 لسنة 2024">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/icon-32.png">
+<link rel="apple-touch-icon" href="assets/icon-180.png">
+<meta property="og:image" content="assets/icon-512.png">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script>
+tailwind.config = { theme: { extend: {
+  colors: { royal:'#0B2A6B', royal2:'#143C94', gold:'#C9A227', gold2:'#E8C95A', flagred:'#CE1126', ink:'#101828' },
+  fontFamily: { head:['Amiri','serif'], body:['Tajawal','sans-serif'] }
+}}}
+</script>
+<style>
+  html{scroll-behavior:smooth}
+  body{font-family:'Tajawal',sans-serif;color:#101828}
+  .flag-bar{height:6px;background:linear-gradient(#CE1126 0 33%,#fff 33% 66%,#000 66%)}
+  .slide{opacity:0;position:absolute;inset:0;transition:opacity .8s}
+  .slide.on{opacity:1;position:relative}
+  .gold-line{height:3px;width:72px;background:#C9A227}
+  .field{width:100%;border:1px solid #d0d5dd;border-radius:6px;padding:.65rem .8rem;background:#fff}
+  .field:focus{outline:2px solid #C9A227;border-color:#C9A227}
+  @media (prefers-reduced-motion:reduce){.slide{transition:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body class="bg-white">
+
+<div class="flag-bar"></div>
+<header class="sticky top-0 z-40 bg-royal text-white shadow">
+  <div class="max-w-6xl mx-auto flex items-center justify-between px-4 py-2">
+    <a href="#home" class="flex items-center gap-3">
+      <img src="assets/logo.jpg" alt="شعار المؤسسة" class="h-12 w-12 rounded-full border-2 border-gold">
+      <span class="font-head text-lg leading-tight hidden sm:block">المؤسسة المصرية الوطنية<br>والتنمية وحقوق الإنسان بالسويس</span>
+    </a>
+    <button id="menuBtn" class="md:hidden p-2" aria-label="القائمة">☰</button>
+    <nav id="nav" class="hidden md:flex gap-5 text-sm font-medium">
+      <a href="#home" class="hover:text-gold2">الرئيسية</a>
+      <a href="#about" class="hover:text-gold2">عن المؤسسة</a>
+      <a href="#services" class="hover:text-gold2">الخدمات</a>
+      <a href="#media" class="hover:text-gold2">المركز الإعلامي</a>
+      <a href="#contact" class="hover:text-gold2">اتصل بنا</a>
+    </nav>
+  </div>
+  <nav id="navM" class="hidden md:hidden bg-royal2 px-4 pb-3 flex flex-col gap-2 text-sm">
+    <a href="#about">عن المؤسسة</a><a href="#services">الخدمات</a><a href="#media">المركز الإعلامي</a><a href="#contact">اتصل بنا</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section id="home" class="bg-royal text-white">
+  <div class="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-[1fr_auto] gap-8 items-center">
+    <div>
+      <div class="relative min-h-[170px]">
+        <div class="slide on">
+          <h1 class="font-head text-3xl md:text-5xl leading-snug">نبني وطنًا يحمي حقوق أبنائه</h1>
+          <p class="mt-3 text-white/85 max-w-xl">مؤسسة مشهرة برقم 810 لسنة 2024، تعمل في محافظة السويس لخدمة المواطنين ودعم التنمية وصون حقوق الإنسان.</p>
+        </div>
+        <div class="slide">
+          <h2 class="font-head text-3xl md:text-5xl leading-snug">استشارة قانونية وتنموية لكل مواطن</h2>
+          <p class="mt-3 text-white/85 max-w-xl">قدّم استشارتك أو شكواك أو مقترحك، ويتابعها فريق المؤسسة.</p>
+        </div>
+        <div class="slide">
+          <h2 class="font-head text-3xl md:text-5xl leading-snug">انضم إلينا متطوعًا أو عضوًا</h2>
+          <p class="mt-3 text-white/85 max-w-xl">مبادرات ميدانية في أحياء السويس تحتاج إلى سواعد أبنائها.</p>
+        </div>
+      </div>
+      <div class="mt-6 flex gap-3">
+        <a href="#services" class="bg-gold text-royal font-bold px-5 py-2.5 rounded hover:bg-gold2">خدماتنا</a>
+        <a href="#contact" class="border border-gold text-gold2 px-5 py-2.5 rounded hover:bg-white/10">تواصل معنا</a>
+      </div>
+    </div>
+    <img src="assets/logo.jpg" alt="شعار المؤسسة" class="w-48 md:w-64 rounded-full border-4 border-gold mx-auto">
+  </div>
+  <div class="bg-royal2/60">
+    <div class="max-w-6xl mx-auto px-4 py-6 grid grid-cols-2 gap-4 sm:gap-8 max-w-3xl">
+      <figure class="flex items-center gap-4">
+        <img src="assets/governor.jpg" alt="اللواء هاني رشاد" class="h-24 w-20 object-cover rounded border-2 border-gold">
+        <figcaption><b class="font-head text-lg">اللواء / هاني رشاد</b><br><span class="text-sm text-white/80">محافظ السويس</span></figcaption>
+      </figure>
+      <figure class="flex items-center gap-4">
+        <img src="assets/chairman.jpg" alt="المستشار صابر أبو دقة" class="h-24 w-20 object-cover rounded border-2 border-gold">
+        <figcaption><b class="font-head text-lg">المستشار / صابر أبو دقة</b><br><span class="text-sm text-white/80">رئيس مجلس الأمناء</span></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="bg-gold/10 border-y border-gold/40">
+  <div class="max-w-6xl mx-auto px-4 py-6 grid grid-cols-3 text-center">
+    <div><div id="st1" class="font-head text-4xl text-royal">0</div><div class="text-sm">مبادرة</div></div>
+    <div><div id="st2" class="font-head text-4xl text-royal">0</div><div class="text-sm">خدمة مقدمة</div></div>
+    <div><div id="st3" class="font-head text-4xl text-royal">0</div><div class="text-sm">مستفيد</div></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="max-w-6xl mx-auto px-4 py-14">
+  <h2 class="font-head text-3xl text-royal">عن المؤسسة</h2><div class="gold-line mt-2"></div>
+  <div class="grid md:grid-cols-3 gap-8 mt-8">
+    <article class="md:col-span-2">
+      <h3 class="font-bold text-xl mb-2">كلمة رئيس مجلس الأمناء</h3>
+      <p class="leading-8 text-gray-700">[ضع هنا كلمة المستشار / صابر أبو دقة]</p>
+    </article>
+    <aside class="bg-royal text-white rounded p-5">
+      <h3 class="font-bold text-gold2 mb-2">بيانات الإشهار</h3>
+      <p class="text-sm leading-7">مشهرة برقم <b>810 لسنة 2024</b><br>مقرها: محافظة السويس</p>
+    </aside>
+  </div>
+  <div class="grid md:grid-cols-3 gap-6 mt-10">
+    <div class="border-r-4 border-gold bg-gray-50 p-5"><h4 class="font-bold text-royal">الرؤية</h4><p class="text-sm mt-2 leading-7">[نص الرؤية]</p></div>
+    <div class="border-r-4 border-gold bg-gray-50 p-5"><h4 class="font-bold text-royal">الرسالة</h4><p class="text-sm mt-2 leading-7">[نص الرسالة]</p></div>
+    <div class="border-r-4 border-gold bg-gray-50 p-5"><h4 class="font-bold text-royal">الأهداف</h4><p class="text-sm mt-2 leading-7">[الأهداف الوطنية والتنموية]</p></div>
+  </div>
+  <h3 class="font-bold text-xl mt-10 mb-3">الهيكل التنظيمي ولجان الأحياء</h3>
+  <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 text-center text-sm">
+    <div class="border rounded p-3">حي الأربعين</div><div class="border rounded p-3">حي السويس</div>
+    <div class="border rounded p-3">حي فيصل</div><div class="border rounded p-3">حي عتاقة</div>
+  </div>
+  <p class="text-xs text-gray-500 mt-2">عدّل أسماء الأحياء واللجان حسب الواقع.</p>
+</section>
+
+<!-- SERVICES -->
+<section id="services" class="bg-gray-50 py-14">
+  <div class="max-w-6xl mx-auto px-4">
+    <h2 class="font-head text-3xl text-royal">الخدمات والدعم المجتمعي</h2><div class="gold-line mt-2"></div>
+    <div class="grid lg:grid-cols-3 gap-6 mt-8">
+      <form class="svc bg-white p-5 rounded shadow-sm space-y-3" data-type="consultation">
+        <h3 class="font-bold text-royal">طلب استشارة قانونية أو تنموية</h3>
+        <input class="field" name="name" placeholder="الاسم" required>
+        <input class="field" name="phone" placeholder="رقم الهاتف" required>
+        <textarea class="field" name="message" rows="4" placeholder="اشرح طلبك" required></textarea>
+        <button class="bg-royal text-white w-full py-2 rounded hover:bg-royal2">إرسال الطلب</button><p class="msg text-sm"></p>
+      </form>
+      <form class="svc bg-white p-5 rounded shadow-sm space-y-3" data-type="complaint">
+        <h3 class="font-bold text-royal">شكوى أو مقترح</h3>
+        <input class="field" name="name" placeholder="الاسم" required>
+        <input class="field" name="phone" placeholder="رقم الهاتف" required>
+        <select class="field" name="kind"><option>شكوى</option><option>مقترح</option></select>
+        <textarea class="field" name="message" rows="3" placeholder="التفاصيل" required></textarea>
+        <button class="bg-royal text-white w-full py-2 rounded hover:bg-royal2">إرسال</button><p class="msg text-sm"></p>
+      </form>
+      <form class="svc bg-white p-5 rounded shadow-sm space-y-3" data-type="membership">
+        <h3 class="font-bold text-royal">طلب عضوية أو تطوع</h3>
+        <input class="field" name="name" placeholder="الاسم بالكامل" required>
+        <input class="field" name="phone" placeholder="رقم الهاتف" required>
+        <select class="field" name="kind"><option>عضوية</option><option>تطوع</option></select>
+        <input class="field" name="district" placeholder="الحي">
+        <button class="bg-royal text-white w-full py-2 rounded hover:bg-royal2">تقديم الطلب</button><p class="msg text-sm"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- MEDIA -->
+<section id="media" class="max-w-6xl mx-auto px-4 py-14">
+  <h2 class="font-head text-3xl text-royal">المركز الإعلامي</h2><div class="gold-line mt-2"></div>
+  <h3 class="font-bold text-xl mt-8 mb-3">أحدث الأخبار</h3>
+  <div id="news" class="grid md:grid-cols-3 gap-5"></div>
+  <h3 class="font-bold text-xl mt-10 mb-3">البيانات الصحفية</h3>
+  <ul id="press" class="divide-y border rounded"></ul>
+  <h3 class="font-bold text-xl mt-10 mb-3">معرض الصور والفيديو</h3>
+  <div id="gallery" class="grid grid-cols-2 md:grid-cols-4 gap-3"></div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="bg-royal text-white py-14">
+  <div class="max-w-6xl mx-auto px-4 grid md:grid-cols-2 gap-8">
+    <div>
+      <h2 class="font-head text-3xl">اتصل بنا</h2><div class="gold-line mt-2"></div>
+      <form class="svc space-y-3 mt-6" data-type="contact">
+        <input class="field text-ink" name="name" placeholder="الاسم" required>
+        <input class="field text-ink" name="phone" placeholder="الهاتف أو البريد" required>
+        <textarea class="field text-ink" name="message" rows="4" placeholder="رسالتك" required></textarea>
+        <button class="bg-gold text-royal font-bold w-full py-2 rounded hover:bg-gold2">إرسال</button><p class="msg text-sm"></p>
+      </form>
+      <p id="cAddr" class="mt-5 text-sm"></p><p id="cPhone" class="text-sm"></p>
+      <div id="social" class="flex gap-4 mt-4 text-gold2 text-sm"></div>
+    </div>
+    <iframe title="خريطة السويس" class="w-full h-80 md:h-full min-h-[300px] rounded border-2 border-gold" loading="lazy"
+      src="https://www.google.com/maps?q=Suez,Egypt&output=embed"></iframe>
+  </div>
+</section>
+
+<footer class="bg-ink text-white/70 text-center text-xs py-5">
+  <div class="flag-bar mb-4"></div>© 2026 المؤسسة المصرية الوطنية والتنمية وحقوق الإنسان بالسويس — مشهرة برقم 810/2024
+</footer>
+
+<a id="wa" target="_blank" rel="noopener" class="fixed bottom-5 left-5 z-50 bg-green-600 text-white rounded-full px-4 py-3 shadow-lg text-sm font-bold">واتساب</a>
+<a id="tg" target="_blank" rel="noopener" class="fixed bottom-20 left-5 z-50 bg-sky-600 text-white rounded-full px-4 py-3 shadow-lg text-sm font-bold">تلجرام</a>
+
+<script>
+document.getElementById('menuBtn').onclick=()=>document.getElementById('navM').classList.toggle('hidden');
+let i=0;const sl=[...document.querySelectorAll('.slide')];
+if(!matchMedia('(prefers-reduced-motion:reduce)').matches)
+setInterval(()=>{sl[i].classList.remove('on');i=(i+1)%sl.length;sl[i].classList.add('on')},5000);
+</script>
+
+<script type="module">
+import { db, CONTACT } from "./firebase-config.js";
+import { collection, addDoc, getDocs, getDoc, doc, query, orderBy, limit, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+const $ = s => document.querySelector(s);
+const el = (tag, cls, text) => { const e=document.createElement(tag); if(cls)e.className=cls; if(text)e.textContent=text; return e; };
+
+// روابط التواصل
+$('#wa').href = `https://wa.me/${CONTACT.whatsapp}`;
+$('#tg').href = `https://t.me/${CONTACT.telegram}`;
+$('#cAddr').textContent = CONTACT.address;
+$('#cPhone').textContent = `${CONTACT.phone} — ${CONTACT.email}`;
+[['يوتيوب',CONTACT.youtube],['فيسبوك',CONTACT.facebook],['إنستجرام',CONTACT.instagram],['تلجرام',`https://t.me/${CONTACT.telegram}`]]
+  .forEach(([t,u])=>{const a=el('a','hover:underline',t);a.href=u;a.target='_blank';a.rel='noopener';$('#social').append(a)});
+
+// الإحصائيات
+try {
+  const s = await getDoc(doc(db,'settings','stats'));
+  if (s.exists()) { const d=s.data(); $('#st1').textContent=d.initiatives??0; $('#st2').textContent=d.services??0; $('#st3').textContent=d.beneficiaries??0; }
+} catch(e){}
+
+const load = async (name, n=12) => {
+  try { return (await getDocs(query(collection(db,name), orderBy('createdAt','desc'), limit(n)))).docs.map(d=>d.data()); }
+  catch(e){ return []; }
+};
+const fmt = t => t?.toDate ? t.toDate().toLocaleDateString('ar-EG') : '';
+
+(await load('news',6)).forEach(n=>{
+  const c = el('article','border rounded overflow-hidden bg-white');
+  if(n.imageUrl){const im=el('img','h-44 w-full object-cover');im.src=n.imageUrl;im.alt=n.title;c.append(im)}
+  const b = el('div','p-4'); b.append(el('div','text-xs text-gray-500',fmt(n.createdAt)), el('h4','font-bold text-royal mt-1',n.title), el('p','text-sm mt-2 text-gray-700',n.body));
+  c.append(b); $('#news').append(c);
+});
+if(!$('#news').children.length) $('#news').append(el('p','text-gray-500','لا توجد أخبار منشورة بعد.'));
+
+(await load('press',10)).forEach(p=>{
+  const li = el('li','p-4'); li.append(el('div','text-xs text-gray-500',fmt(p.createdAt)+' — صادر عن المكتب الإعلامي'), el('b','text-royal',p.title), el('p','text-sm mt-1 text-gray-700',p.body));
+  $('#press').append(li);
+});
+
+(await load('gallery',16)).forEach(g=>{
+  let node;
+  if(g.mediaType==='video'){node=el('video','w-full h-36 object-cover rounded');node.src=g.url;node.controls=true}
+  else{node=el('img','w-full h-36 object-cover rounded');node.src=g.url;node.alt=g.caption||'صورة من فعالية';node.loading='lazy'}
+  $('#gallery').append(node);
+});
+
+// النماذج
+document.querySelectorAll('form.svc').forEach(f=>f.addEventListener('submit', async e=>{
+  e.preventDefault(); const m=f.querySelector('.msg'); const btn=f.querySelector('button'); btn.disabled=true;
+  try{
+    await addDoc(collection(db,'messages'),{ type:f.dataset.type, ...Object.fromEntries(new FormData(f)), status:'new', createdAt:serverTimestamp() });
+    m.textContent='تم الإرسال بنجاح. سنتواصل معك قريبًا.'; m.className='msg text-sm text-green-500'; f.reset();
+  }catch(err){ m.textContent='تعذر الإرسال. حاول مرة أخرى أو تواصل عبر واتساب.'; m.className='msg text-sm text-red-500'; }
+  btn.disabled=false;
+}));
+</script>
+</body>
+</html>
