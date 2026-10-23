@@ -8,12 +8,12 @@ import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "http
 
 /* ============ 1) إعدادات Firebase (الحماية 1/3: App Check) ============ */
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "000000000000",
-  appId: "1:000000000000:web:xxxxxxxx"
+  apiKey: "AIzaSyB3kxmLlMDReCR6hVqbeKJ5IVb_pzLQUnc",
+  authDomain: "national-foundation-6945d.firebaseapp.com",
+  projectId: "national-foundation-6945d",
+  storageBucket: "national-foundation-6945d.firebasestorage.app",
+  messagingSenderId: "874449306313",
+  appId: "1:874449306313:web:535a88c8ead683caad4318"
 };
 const RECAPTCHA_SITE_KEY = ""; // من Firebase Console > App Check
 
