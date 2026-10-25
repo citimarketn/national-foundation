@@ -198,13 +198,28 @@ function initAdmin() {
   ["click", "keydown", "touchstart"].forEach((e) => document.addEventListener(e, resetIdle));
 
   onAuthStateChanged(auth, async (user) => {
-    let ok = false;
-    if (user) {
-      try { ok = (await getDoc(doc(db, "admins", user.uid))).exists(); } catch { /* ignore */ }
-      if (!ok) { $("#login-error").textContent = "هذا الحساب ليس مسؤولًا."; await signOut(auth); return; }
+  let ok = false;
+  if (user) {
+    try { 
+      const docSnap = await getDoc(doc(db, "admins", user.uid));
+      ok = docSnap.exists(); 
+    } catch (/* ignore */) { }
+
+    // حل جذري: السماح التلقائي للبريدين المعتمدين حتى لو اختلف الـ UID
+    if (!ok && (user.email === "abdeenali520@gmail.com" || user.email === "city89229@gmail.com")) {
+      ok = true;
     }
-    $("#login").classList.toggle("hidden", ok); $("#panel").classList.toggle("hidden", !ok);
-    if (ok) { resetIdle(); buildTabs(); show("site"); }
+
+    if (!ok) { 
+      $("#login-error").textContent = "هذا الحساب ليس مسؤولًا."; 
+      await signOut(auth); 
+      return; 
+    }
+  }
+  $("#login").classList.toggle("hidden", ok); 
+  $("#panel").classList.toggle("hidden", !ok);
+  if (ok) { resetIdle(); buildTabs(); show("site"); }
+});
   });
 
   const buildTabs = () => $("#tabs").replaceChildren(...Object.entries(SECTIONS).map(([k, s]) => { const b = el("button", "px-4 py-2 rounded bg-white border", s.label); b.addEventListener("click", () => show(k)); return b; }));
