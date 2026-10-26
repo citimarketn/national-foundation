@@ -3,7 +3,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/fireba
 import { initializeAppCheck, ReCaptchaV3Provider } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app-check.js";
 import { getFirestore, collection, addDoc, getDocs, getDoc, setDoc, updateDoc, deleteDoc, doc, query, orderBy, limit, serverTimestamp }
   from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
-import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
 
 /* ============ 1) إعدادات Firebase (الحماية 1/3: App Check) ============ */
@@ -29,11 +29,39 @@ const safeUrl = (u) => (/^https:\/\//i.test(u || "") ? u : "");
 const fmtDate = (t) => (t?.toDate ? t.toDate().toLocaleDateString("ar-EG") : "");
 const store = { get: (k) => { try { return Number(localStorage.getItem(k) || 0); } catch { return 0; } }, set: (k, v) => { try { localStorage.setItem(k, String(v)); } catch { /* ignore */ } } };
 
+const toast = (text) => {
+  if (!text) return;
+  const t = el("div", "fixed bottom-5 left-1/2 -translate-x-1/2 z-50 bg-gray-900 text-white text-sm px-4 py-2 rounded shadow", text);
+  document.body.append(t);
+  setTimeout(() => t.remove(), 4000);
+};
+const googleSignIn = () => signInWithPopup(auth, new GoogleAuthProvider());
+const authError = (err) => ({
+  "auth/unauthorized-domain": "النطاق غير مصرّح به: أضفه في Authentication ← Settings ← Authorized domains.",
+  "auth/operation-not-allowed": "فعّل مزوّد Google من Authentication ← Sign-in method.",
+  "auth/popup-blocked": "المتصفح منع النافذة المنبثقة، اسمح بها ثم أعد المحاولة.",
+  "auth/popup-closed-by-user": "", "auth/cancelled-popup-request": ""
+}[err.code] ?? "تعذر تسجيل الدخول، حاول مرة أخرى.");
+
 const DEFAULTS = {
   slides: "نبني وطنًا يحمي حقوق أبنائه | مؤسسة مشهرة برقم 810 لسنة 2024 تعمل في السويس لخدمة المواطنين ودعم التنمية وحقوق الإنسان.\nاستشارة قانونية وتنموية لكل مواطن | قدّم استشارتك أو شكواك ويتابعها فريق المؤسسة.\nانضم إلينا متطوعًا أو عضوًا | مبادرات ميدانية في أحياء السويس تحتاج إلى سواعد أبنائها.",
   chairmanWord: "", vision: "", mission: "", goals: "", districts: "حي الأربعين\nحي السويس\nحي فيصل\nحي عتاقة",
   whatsapp: "", telegram: "", phone: "", email: "", address: "السويس، جمهورية مصر العربية", youtube: "", facebook: "", instagram: ""
 };
+Object.assign(DEFAULTS, {
+  intro: "المؤسسة المصرية الوطنية والتنمية وحقوق الإنسان، ومقرها الرئيسي محافظة السويس، مؤسسة أهلية مشهرة برقم 810 لسنة 2024، تعمل على تعزيز حقوق الإنسان وترسيخ قيم المواطنة، وتمكين الأسر الأولى بالرعاية، وبناء شراكات تنموية مع مؤسسات الدولة والمجتمع المدني.",
+  vision: "أن تكون المؤسسة بيت الخبرة المجتمعي الأول في محافظة السويس في مجال التنمية وحقوق الإنسان، وأن يصل أثر برامجها إلى كل حي وقرية بالمحافظة دون استثناء.",
+  mission: "تقديم خدمات قانونية وتنموية مجانية، وبناء قدرات الشباب والمرأة، ورصد احتياجات المواطنين والدفاع عن حقوقهم، من خلال لجان الأحياء وشراكات فاعلة مع الجهات الرسمية.",
+  hours: "",
+  servicesList: [
+    "الاستشارات القانونية المجانية | استشارات في الأحوال الشخصية والعمل والإيجار والتأمينات، يقدمها محامون متطوعون بالمقر الرئيسي وبمقرات لجان الأحياء.",
+    "المساندة والدفاع الحقوقي | متابعة شكاوى المواطنين وتقديم المساندة القانونية الكاملة للحالات الأولى بالرعاية من الاستشارة حتى إتمام الإجراءات.",
+    "حماية الأسرة والطفل | الدفاع عن حقوق الطفل والأسرة، ورعاية الحالات الإنسانية، والتنسيق مع جهات الحماية الاجتماعية بالمحافظة.",
+    "التمكين الاقتصادي وريادة الأعمال | تدريب على دراسات الجدوى وإدارة المشروعات الصغيرة ومتناهية الصغر، وتيسير التمويل والتسويق للمشروعات.",
+    "لجان الأحياء والتمثيل المجتمعي | لجان موزعة على أحياء المحافظة لرصد الاحتياجات وتلقي المقترحات ورفعها إلى إدارة المؤسسة والجهات المعنية.",
+    "التوعية والتثقيف الحقوقي | قوافل توعوية وندوات وإصدارات مبسطة تنشر الثقافة القانونية والوعي بالحقوق والواجبات بين المواطنين."
+  ].join("\n")
+});
 const loadSite = async () => { try { const s = await getDoc(doc(db, "settings", "site")); return { ...DEFAULTS, ...(s.exists() ? s.data() : {}) }; } catch { return DEFAULTS; } };
 const loadList = async (name, max) => { try { return (await getDocs(query(collection(db, name), orderBy("createdAt", "desc"), limit(max)))).docs.map((d) => d.data()); } catch { return []; } };
 
@@ -100,7 +128,7 @@ async function submitForm(e) { // فخ البوتات + مهلة بين الإر
   if (data.name.length < 2) return say("الاسم قصير جدًا.", false);
   if (!/^[0-9+\-\s]{7,20}$/.test(data.phone)) return say("رقم الهاتف غير صحيح.", false);
   btn.disabled = true;
-  try { await addDoc(collection(db, "messages"), { ...data, status: "new", createdAt: serverTimestamp() }); store.set("lastSent", Date.now()); form.reset(); say("تم الإرسال بنجاح، سنتواصل معك قريبًا.", true); }
+  try { await addDoc(collection(db, "messages"), { ...data, status: "new", createdAt: serverTimestamp() }); store.set("lastSent", Date.now()); rememberRequest(data); form.reset(); say("تم الإرسال بنجاح، سنتواصل معك قريبًا.", true); }
   catch { say("تعذر الإرسال، حاول لاحقًا أو تواصل عبر واتساب.", false); }
   finally { btn.disabled = false; }
 }
@@ -117,7 +145,7 @@ function renderForms() {
   });
 }
 
-function route() { // صفحة واحدة بأقسام: #home #about #services #media #contact
+function route() { // تبويبات: #home #about #services #media #contact
   const views = [...document.querySelectorAll("[data-view]")];
   const hash = location.hash.slice(1);
   const id = views.some((v) => v.dataset.view === hash) ? hash : "home";
@@ -127,10 +155,79 @@ function route() { // صفحة واحدة بأقسام: #home #about #services #
   scrollTo(0, 0);
 }
 
+function bindSwitch(key) { // أزرار تبديل داخلية: data-<key> على الزر واللوحة
+  const buttons = document.querySelectorAll(`.seg[data-${key}]`), panels = document.querySelectorAll(`[data-${key}]:not(.seg)`);
+  buttons.forEach((b) => b.addEventListener("click", () => {
+    buttons.forEach((x) => x.classList.toggle("active", x === b));
+    panels.forEach((p) => p.classList.toggle("hidden", p.dataset[key] !== b.dataset[key]));
+  }));
+}
+
+/* طلباتي المسجلة: محفوظة في هذا الجهاز فقط */
+const MINE_KEY = "myRequests";
+const readMine = () => { try { return JSON.parse(localStorage.getItem(MINE_KEY) || "[]"); } catch { return []; } };
+function renderMine() {
+  const box = $("#mine"), items = readMine();
+  if (!box) return;
+  box.replaceChildren(...(items.length ? items.map((r) => {
+    const li = el("li", "border rounded-xl p-3 text-sm");
+    li.append(el("b", "text-royal", `${TYPES[r.type] || r.type}${r.kind ? ` — ${r.kind}` : ""}`), el("p", "muted mt-1", r.note), el("p", "text-xs muted mt-1", `${r.date} — قيد المراجعة`));
+    return li;
+  }) : [el("li", "muted text-sm", "لا توجد طلبات مسجلة بعد.")]));
+}
+function rememberRequest(data) {
+  const note = clean(data.message || data.district || "", 70);
+  const list = [{ type: data.type, kind: data.kind || "", note, date: new Date().toLocaleDateString("ar-EG") }, ...readMine()].slice(0, 10);
+  try { localStorage.setItem(MINE_KEY, JSON.stringify(list)); } catch { /* ignore */ }
+  renderMine();
+}
+
+function initVisitorAuth() { // انضم إلينا: اشتراك + دخول بحساب Gmail
+  const btn = $("#auth-btn");
+  const label = (user) => (user ? `خروج (${(user.displayName || user.email || "").split(" ")[0]})` : "انضم إلينا");
+  onAuthStateChanged(auth, (user) => { btn.textContent = label(user); });
+  btn.addEventListener("click", async () => {
+    if (auth.currentUser) return signOut(auth);
+    try {
+      const { user } = await googleSignIn();
+      const subscriber = doc(db, "subscribers", user.uid);
+      if (!(await getDoc(subscriber)).exists())
+        await setDoc(subscriber, { name: clean(user.displayName, 100), email: user.email, createdAt: serverTimestamp() });
+      toast("تم الاشتراك وتسجيل الدخول بنجاح.");
+    } catch (err) { toast(authError(err)); }
+  });
+}
+
+function renderStrip(box, items) {
+  box.replaceChildren();
+  const images = items.filter((g) => g.mediaType !== "video" && safeUrl(g.url)).slice(0, 4);
+  if (!images.length) return box.append(el("p", "muted col-span-full", "ستظهر هنا لقطات الفاعليات بعد رفعها من لوحة التحكم."));
+  for (const g of images) {
+    const tile = el("figure", "tile"), img = el("img"); img.src = g.url; img.alt = g.caption || "من فاعليات المؤسسة"; img.loading = "lazy";
+    tile.append(img); if (g.caption) tile.append(el("span", "", g.caption)); box.append(tile);
+  }
+}
+
+function fillContact(box, site) {
+  if (!box) return;
+  box.replaceChildren(...[site.address, site.phone, site.email, site.hours].filter(Boolean).map((t) => el("p", "", t)));
+}
+function fillSocial(box, site) {
+  if (!box) return;
+  const tg = clean(site.telegram, 40).replace(/[^\w]/g, "");
+  for (const [label, url] of [["يوتيوب", safeUrl(site.youtube)], ["فيسبوك", safeUrl(site.facebook)], ["إنستجرام", safeUrl(site.instagram)], ["تلجرام", tg && `https://t.me/${tg}`]]) {
+    if (!url) continue;
+    const a = el("a", "hover:underline", label); a.href = url; a.target = "_blank"; a.rel = "noopener noreferrer"; box.append(a);
+  }
+}
+
 async function initSite() {
   addEventListener("hashchange", route); route();
   $("#menu-btn").addEventListener("click", () => $("#menu-m").classList.toggle("hidden"));
-  renderForms();
+  bindSwitch("mtab"); bindSwitch("ftab");
+  document.querySelectorAll("[data-open]").forEach((a) => a.addEventListener("click", () => $(`.seg[data-mtab="${a.dataset.open}"]`)?.click()));
+  renderForms(); renderMine(); initVisitorAuth();
+
   const [site, news, press, gallery, stats] = await Promise.all([
     loadSite(), loadList("news", 12), loadList("press", 20), loadList("gallery", 24),
     getDoc(doc(db, "settings", "stats")).then((s) => (s.exists() ? s.data() : {})).catch(() => ({}))
@@ -138,25 +235,33 @@ async function initSite() {
 
   const slides = site.slides.split("\n").filter(Boolean).map((line) => {
     const [title, text = ""] = line.split("|").map((s) => s.trim());
-    const s = el("div", "slide"); s.append(el("h2", "font-head text-3xl md:text-5xl leading-snug", title), el("p", "mt-3 text-white/85 max-w-xl", text)); return s;
+    const s = el("div", "slide"); s.append(el("b", "display text-xl text-white block", title), el("p", "mt-1 leading-7", text)); return s;
   });
   $("#slides").replaceChildren(...slides);
   let i = 0; slides[0]?.classList.add("on");
   if (slides.length > 1 && !matchMedia("(prefers-reduced-motion: reduce)").matches)
     setInterval(() => { slides[i].classList.remove("on"); i = (i + 1) % slides.length; slides[i].classList.add("on"); }, 5000);
 
-  $("#st-initiatives").textContent = stats.initiatives ?? 0; $("#st-services").textContent = stats.services ?? 0; $("#st-beneficiaries").textContent = stats.beneficiaries ?? 0;
-  renderNews($("#news-home"), news.slice(0, 3)); renderNews($("#news"), news); renderPress($("#press"), press); renderGallery($("#gallery"), gallery);
+  for (const [id, key] of [["initiatives", "initiatives"], ["services", "services"], ["beneficiaries", "beneficiaries"], ["committees", "committees"]])
+    $(`#st-${id}`).textContent = Number(stats[key] ?? 0).toLocaleString("en-US");
+  $("#c-news").textContent = news.length; $("#c-press").textContent = press.length; $("#c-gallery").textContent = gallery.length;
 
-  for (const k of ["chairmanWord", "vision", "mission", "goals"]) $(`#${k}`).textContent = site[k] || "سيتم إضافة المحتوى قريبًا.";
-  $("#districts").replaceChildren(...site.districts.split("\n").map((s) => s.trim()).filter(Boolean).map((n) => el("div", "border rounded p-3", n)));
+  renderNews($("#news-home"), news.slice(0, 3)); renderNews($("#news"), news); renderPress($("#press"), press); renderGallery($("#gallery"), gallery); renderStrip($("#strip"), gallery);
 
-  [site.address, site.phone, site.email].filter(Boolean).forEach((t) => $("#info").append(el("p", "text-sm", t)));
+  document.querySelectorAll("[data-bind]").forEach((n) => { n.textContent = site[n.dataset.bind] || (n.dataset.bind === "chairmanWord" ? "سيتم إضافة كلمة رئيس مجلس الأمناء قريبًا." : "سيتم إضافة المحتوى قريبًا."); });
+  $("#districts").replaceChildren(...site.districts.split("\n").map((s) => s.trim()).filter(Boolean).map((n) => el("div", "card p-4", n)));
+
+  $("#services-grid").replaceChildren(...site.servicesList.split("\n").filter(Boolean).map((line, idx) => {
+    const [title, text = ""] = line.split("|").map((s) => s.trim());
+    const card = el("article", "card p-6 lift");
+    card.append(el("div", "num", String(idx + 1).padStart(2, "0")), el("h3", "display text-xl mt-4 text-white", title), el("p", "text-sm mt-2 leading-7 muted", text));
+    return card;
+  }));
+
+  ["#info", "#info-s", "#f-info"].forEach((s) => fillContact($(s), site));
+  ["#social", "#f-social"].forEach((s) => fillSocial($(s), site));
+
   const wa = clean(site.whatsapp, 20).replace(/\D/g, ""), tg = clean(site.telegram, 40).replace(/[^\w]/g, "");
-  for (const [label, url] of [["يوتيوب", safeUrl(site.youtube)], ["فيسبوك", safeUrl(site.facebook)], ["إنستجرام", safeUrl(site.instagram)], ["تلجرام", tg && `https://t.me/${tg}`]]) {
-    if (!url) continue;
-    const a = el("a", "hover:underline", label); a.href = url; a.target = "_blank"; a.rel = "noopener noreferrer"; $("#social").append(a);
-  }
   const fab = (href, label, color, pos) => { const a = el("a", `fixed ${pos} left-5 z-50 ${color} text-white rounded-full px-4 py-3 shadow-lg text-sm font-bold`, label); a.href = href; a.target = "_blank"; a.rel = "noopener noreferrer"; document.body.append(a); };
   if (wa) fab(`https://wa.me/${wa}`, "واتساب", "bg-green-600", "bottom-5");
   if (tg) fab(`https://t.me/${tg}`, "تلجرام", "bg-sky-600", "bottom-20");
@@ -167,13 +272,15 @@ const SECTIONS = {
   site: { label: "إعدادات الموقع", single: ["settings", "site"], fields: [
     ["slides", "رسائل الواجهة (سطر لكل رسالة: العنوان | النص)", "area"], ["chairmanWord", "كلمة رئيس مجلس الأمناء", "area"], ["vision", "الرؤية", "area"],
     ["mission", "الرسالة", "area"], ["goals", "الأهداف", "area"], ["districts", "الأحياء (سطر لكل حي)", "area"],
+    ["intro", "نبذة عن المؤسسة", "area"], ["servicesList", "الخدمات (سطر لكل خدمة: العنوان | الوصف)", "area"], ["hours", "مواعيد العمل"],
     ["whatsapp", "واتساب (بالصيغة الدولية بدون +)"], ["telegram", "اسم مستخدم تلجرام"], ["phone", "الهاتف"], ["email", "البريد"],
     ["address", "العنوان"], ["youtube", "رابط يوتيوب"], ["facebook", "رابط فيسبوك"], ["instagram", "رابط إنستجرام"]] },
-  stats: { label: "الإحصائيات", single: ["settings", "stats"], fields: [["initiatives", "عدد المبادرات", "num"], ["services", "الخدمات المقدمة", "num"], ["beneficiaries", "المستفيدون", "num"]] },
+  stats: { label: "الإحصائيات", single: ["settings", "stats"], fields: [["initiatives", "عدد المبادرات", "num"], ["services", "الخدمات المقدمة", "num"], ["beneficiaries", "المستفيدون", "num"], ["committees", "لجان الأحياء", "num"]] },
   news: { label: "الأخبار", fields: [["title", "العنوان"], ["body", "النص", "area"], ["image", "صورة الخبر", "file"]] },
   press: { label: "البيانات الصحفية", fields: [["title", "العنوان"], ["body", "نص البيان", "area"]] },
   gallery: { label: "الصور والفيديو", fields: [["caption", "وصف"], ["media", "صورة أو فيديو", "file"]] },
-  messages: { label: "الطلبات الواردة", readonly: true }
+  messages: { label: "الطلبات الواردة", readonly: true },
+  subscribers: { label: "المشتركون", readonly: true }
 };
 const TYPES = { consultation: "استشارة", complaint: "شكوى/مقترح", membership: "عضوية/تطوع", contact: "رسالة" };
 const state = { current: "site", editing: null };
@@ -193,33 +300,21 @@ function initAdmin() {
     }
   });
   $("#logout").addEventListener("click", () => signOut(auth));
+  $("#google-btn").addEventListener("click", async () => {
+    try { await googleSignIn(); } catch (err) { $("#login-error").textContent = authError(err); }
+  });
 
   let idle; const resetIdle = () => { clearTimeout(idle); idle = setTimeout(() => signOut(auth), 15 * 60_000); };
   ["click", "keydown", "touchstart"].forEach((e) => document.addEventListener(e, resetIdle));
 
   onAuthStateChanged(auth, async (user) => {
-  let ok = false;
-  if (user) {
-    try { 
-      const docSnap = await getDoc(doc(db, "admins", user.uid));
-      ok = docSnap.exists(); 
-    } catch (/* ignore */) { }
-
-    // حل جذري: السماح التلقائي للبريدين المعتمدين حتى لو اختلف الـ UID
-    if (!ok && (user.email === "abdeenali520@gmail.com" || user.email === "city89229@gmail.com")) {
-      ok = true;
+    let ok = false;
+    if (user) {
+      try { ok = (await getDoc(doc(db, "admins", user.uid))).exists(); } catch { /* ignore */ }
+      if (!ok) { $("#login-error").textContent = `هذا الحساب ليس مسؤولًا. أنشئ مستندًا في مجموعة admins معرّفه (UID): ${user.uid}`; await signOut(auth); return; }
     }
-
-    if (!ok) { 
-      $("#login-error").textContent = "هذا الحساب ليس مسؤولًا."; 
-      await signOut(auth); 
-      return; 
-    }
-  }
-  $("#login").classList.toggle("hidden", ok); 
-  $("#panel").classList.toggle("hidden", !ok);
-  if (ok) { resetIdle(); buildTabs(); show("site"); }
-});
+    $("#login").classList.toggle("hidden", ok); $("#panel").classList.toggle("hidden", !ok);
+    if (ok) { resetIdle(); buildTabs(); show("site"); }
   });
 
   const buildTabs = () => $("#tabs").replaceChildren(...Object.entries(SECTIONS).map(([k, s]) => { const b = el("button", "px-4 py-2 rounded bg-white border", s.label); b.addEventListener("click", () => show(k)); return b; }));
@@ -252,12 +347,12 @@ function initAdmin() {
     if (!snap.size) return list.append(el("li", "py-3 text-gray-500", "لا توجد عناصر بعد."));
     snap.forEach((d) => {
       const x = d.data(), li = el("li", "py-3 flex justify-between gap-3 items-start"), info = el("div", "text-sm space-y-1"), actions = el("div", "flex gap-3 text-sm shrink-0");
-      const head = key === "messages" ? `${TYPES[x.type] || x.type} — ${x.name} (${x.phone})` : (x.title || x.caption || "—");
+      const head = key === "messages" ? `${TYPES[x.type] || x.type} — ${x.name} (${x.phone})` : key === "subscribers" ? `${x.name} — ${x.email}` : (x.title || x.caption || "—");
       info.append(el("b", "", head), el("p", "text-gray-600 whitespace-pre-line", [x.kind, x.district, x.body, x.message].filter(Boolean).join(" — ")), el("p", "text-xs text-gray-400", fmtDate(x.createdAt)));
       if (key === "messages") {
         const done = x.status === "done", t = el("button", done ? "text-gray-500" : "text-green-700", done ? "إعادة فتح" : "تمت المعالجة");
         t.addEventListener("click", async () => { await updateDoc(doc(db, key, d.id), { status: done ? "new" : "done" }); show(key); }); actions.append(t);
-      } else {
+      } else if (!SECTIONS[key].readonly) {
         const e = el("button", "text-blue-700", "تعديل"); e.addEventListener("click", () => { state.editing = { id: d.id, data: x }; renderForm(x); scrollTo({ top: 0 }); }); actions.append(e);
       }
       const del = el("button", "text-red-600", "حذف");

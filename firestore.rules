@@ -19,6 +19,17 @@ service cloud.firestore {
       allow write: if false;   // تُضاف يدويًا من Firebase Console فقط
     }
 
+    // المشتركون: الزائر يسجّل نفسه فقط ببياناته من حساب Google، والمسؤول يقرأ الكل
+    match /subscribers/{uid} {
+      allow create: if request.auth != null && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['name','email','createdAt'])
+        && text(request.resource.data.name, 100)
+        && request.resource.data.email == request.auth.token.email
+        && request.resource.data.createdAt == request.time;
+      allow read, delete: if request.auth != null && (request.auth.uid == uid || isAdmin());
+      allow update: if false;
+    }
+
     match /messages/{id} {
       allow create: if request.resource.data.keys().hasOnly(['type','name','phone','message','kind','district','status','createdAt'])
         && request.resource.data.type in ['consultation','complaint','membership','contact']
