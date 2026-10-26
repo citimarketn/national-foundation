@@ -8,7 +8,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "http
 
 /* ============ 1) إعدادات Firebase (الحماية 1/3: App Check) ============ */
 const firebaseConfig = {
-  apiKey: "AIzaSyB3kxmLlMDReCR6hVqbeKJ5IVb_pzLQUnc",
+  apiKey: "AIzaSyB3kxmllMDReCR6hVqbeKJ5IVb_pzLQUnc",
   authDomain: "national-foundation-6945d.firebaseapp.com",
   projectId: "national-foundation-6945d",
   storageBucket: "national-foundation-6945d.firebasestorage.app",
