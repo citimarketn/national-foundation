@@ -13,8 +13,8 @@
 :root{--bg:#050d21;--bg2:#08142e;--card:#0b1a3b;--gold:#C9A227;--gold2:#E8C95A;--text:#e9edf7;--on-gold:#0a1630;--hero-img:url(assets/hero.jpg)}
 html[data-mode="light"]{--bg:#f6f8fc;--bg2:#e9eff8;--card:#ffffff;--gold:#a67c00;--gold2:#8a6700;--text:#0f1b33;--on-gold:#ffffff}
 :root,html[data-mode="light"]{--line:color-mix(in srgb,var(--gold) 28%,transparent);--muted:color-mix(in srgb,var(--text) 62%,var(--bg))}
-html{scroll-behavior:smooth}
-body#site{background:var(--bg);color:var(--text);font-family:Tajawal,sans-serif;transition:background .25s,color .25s}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}img,video,iframe{max-width:100%}
+body#site{overflow-x:clip;overflow-wrap:break-word;background:var(--bg);color:var(--text);font-family:Tajawal,sans-serif;transition:background .25s,color .25s}
 .display{font-family:Lalezar,Amiri,serif;font-weight:400}
 #site .bg-white,.card{background:var(--card)}
 .card{border:1px solid var(--line);border-radius:18px}
@@ -36,6 +36,7 @@ body#site{background:var(--bg);color:var(--text);font-family:Tajawal,sans-serif;
 #site .btn:hover{filter:brightness(1.08)}#site .btn:disabled{opacity:.6;cursor:wait}
 .btn-ghost{border:1px solid var(--line);color:var(--gold2);border-radius:12px;padding:.65rem 1.2rem;display:inline-block}
 .btn-ghost:hover{background:color-mix(in srgb,var(--gold) 12%,transparent)}
+#auth-btn{max-width:9rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .iconbtn{border:1px solid var(--line);color:var(--gold2);border-radius:10px;padding:.35rem .7rem;font-size:.85rem;font-weight:700}
 .seg{padding:.55rem 1.1rem;border:1px solid var(--line);border-radius:12px;color:var(--text)}
 .seg.active{background:linear-gradient(180deg,var(--gold2),var(--gold));color:var(--on-gold);font-weight:700}
@@ -66,10 +67,10 @@ body#site{background:var(--bg);color:var(--text);font-family:Tajawal,sans-serif;
 #site .field{width:100%;border:1px solid var(--line);border-radius:12px;padding:.7rem .9rem;background:color-mix(in srgb,var(--bg) 70%,var(--card));color:var(--text)}
 #site .field:focus{outline:2px solid var(--gold);border-color:var(--gold)}
 #site .field::placeholder{color:var(--muted)}
-.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.hp{position:absolute;width:1px;height:1px;margin:-1px;padding:0;border:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
 .footer{background:var(--bg2);border-top:1px solid var(--line)}
 .footer a:hover{color:var(--gold2)}
-.flag-bar{height:3px;background:linear-gradient(90deg,#CE1126 0 33%,#fff 33% 66%,#000 66%)}
+.flag-bar{height:12px;background:linear-gradient(180deg,#CE1126 0 33.3%,#fff 33.3% 66.6%,#000 66.6%)}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.lift,body#site{transition:none}}
 </style>
 </head>
@@ -79,18 +80,18 @@ body#site{background:var(--bg);color:var(--text);font-family:Tajawal,sans-serif;
   <div class="max-w-6xl mx-auto flex items-center justify-between gap-3 px-4 py-2">
     <a href="#home" class="flex items-center gap-3">
       <img data-img="logo" src="assets/logo.jpg" alt="Logo" class="h-12 w-12 rounded-full border border-yellow-600">
-      <span class="leading-tight"><b class="display text-lg text-white block">المؤسسة المصرية الوطنية</b><small class="text-yellow-500">محافظة السويس</small></span>
+      <span class="leading-tight hidden sm:block"><b class="display text-lg text-white block">المؤسسة المصرية الوطنية</b><small class="text-yellow-500">محافظة السويس</small></span>
     </a>
     <nav role="tablist" class="hidden lg:flex gap-6 text-sm font-medium"><a href="#home" class="tab" data-tab="home" role="tab">الرئيسية</a><a href="#about" class="tab" data-tab="about" role="tab">عن المؤسسة</a><a href="#services" class="tab" data-tab="services" role="tab">الخدمات والدعم</a><a href="#media" class="tab" data-tab="media" role="tab">المركز الإعلامي</a><a href="#contact" class="tab" data-tab="contact" role="tab">اتصل بنا</a></nav>
     <div class="flex items-center gap-2">
       <button id="mode-btn" class="iconbtn" aria-label="Theme">☀</button>
       <button id="lang-btn" class="iconbtn" aria-label="Language">EN</button>
-      <a href="admin.html" class="btn-ghost text-sm hidden sm:inline-block">لوحة التحكم</a>
       <button id="auth-btn" class="btn text-sm">انضم إلينا</button>
       <button id="menu-btn" class="lg:hidden p-2 text-white" aria-label="Menu">☰</button>
     </div>
   </div>
-  <nav id="menu-m" role="tablist" class="hidden lg:hidden px-4 pb-3 flex flex-col text-sm border-t border-yellow-900/40"><a href="#home" class="tab" data-tab="home" role="tab">الرئيسية</a><a href="#about" class="tab" data-tab="about" role="tab">عن المؤسسة</a><a href="#services" class="tab" data-tab="services" role="tab">الخدمات والدعم</a><a href="#media" class="tab" data-tab="media" role="tab">المركز الإعلامي</a><a href="#contact" class="tab" data-tab="contact" role="tab">اتصل بنا</a><a href="admin.html" class="tab">لوحة التحكم</a></nav>
+  <div class="flag-bar"></div>
+  <nav id="menu-m" role="tablist" class="hidden lg:hidden px-4 pb-3 flex flex-col text-sm border-t border-yellow-900/40"><a href="#home" class="tab" data-tab="home" role="tab">الرئيسية</a><a href="#about" class="tab" data-tab="about" role="tab">عن المؤسسة</a><a href="#services" class="tab" data-tab="services" role="tab">الخدمات والدعم</a><a href="#media" class="tab" data-tab="media" role="tab">المركز الإعلامي</a><a href="#contact" class="tab" data-tab="contact" role="tab">اتصل بنا</a></nav>
 </header>
 
 <main>
@@ -121,31 +122,31 @@ body#site{background:var(--bg);color:var(--text);font-family:Tajawal,sans-serif;
     <div class="stat"><b id="st-beneficiaries">0</b><span class="muted text-sm">مستفيد من برامجنا</span></div>
     <div class="stat"><b id="st-committees">0</b><span class="muted text-sm">لجنة أحياء بالمحافظة</span></div>
   </div></div>
-  <div class="max-w-6xl mx-auto px-4 py-16 grid md:grid-cols-2 gap-8 items-start" data-block="intro">
+  <div class="max-w-6xl mx-auto px-4 py-10 md:py-16 grid md:grid-cols-2 gap-8 items-start" data-block="intro">
     <div><div class="kicker">من نحن</div><h2 class="display text-3xl md:text-4xl mt-2 text-white">مؤسسة من أبناء السويس… لخدمة أبناء السويس</h2><div class="gold-line"></div>
       <p data-bind="intro" class="mt-5 leading-8 text-gray-300"></p>
       <div class="grid sm:grid-cols-2 gap-4 mt-6"><div class="card p-5"><h3 class="display text-xl text-white">رؤيتنا</h3><p data-bind="vision" class="text-sm mt-2 leading-7 muted"></p></div><div class="card p-5"><h3 class="display text-xl text-white">رسالتنا</h3><p data-bind="mission" class="text-sm mt-2 leading-7 muted"></p></div></div>
       <a href="#about" class="btn-ghost mt-6">كلمة رئيس المؤسسة والهيكل التنظيمي ←</a></div>
     <div class="card p-8 text-center"><img data-img="logo" src="assets/logo.jpg" alt="Logo" class="w-56 mx-auto rounded-full border-2 border-yellow-600"><p class="mt-4 text-yellow-500 display text-xl">مشهرة برقم 810 لسنة 2024</p></div>
   </div>
-  <div class="alt-bg" data-block="services"><div class="max-w-6xl mx-auto px-4 py-16 text-center">
+  <div class="alt-bg" data-block="services"><div class="max-w-6xl mx-auto px-4 py-10 md:py-16 text-center">
     <div class="kicker justify-center">خدماتنا ومبادراتنا</div><h2 class="display text-3xl md:text-4xl mt-2 text-white">خدمات مجانية لكل مواطن في السويس</h2>
     <div id="services-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mt-10 text-start"></div><a href="#services" class="btn mt-10">تقديم طلب أو شكوى ←</a>
   </div></div>
-  <div class="max-w-6xl mx-auto px-4 py-16" data-block="news">
+  <div class="max-w-6xl mx-auto px-4 py-10 md:py-16" data-block="news">
     <div class="flex justify-between items-end flex-wrap gap-3"><div><div class="kicker">المركز الإعلامي</div><h2 class="display text-3xl md:text-4xl mt-2 text-white">أحدث الأخبار والفاعليات بالسويس</h2><div class="gold-line"></div></div><a href="#media" class="btn-ghost">كل الأخبار ←</a></div>
     <div id="news-home" class="grid md:grid-cols-3 gap-5 mt-8"></div>
   </div>
-  <div class="max-w-6xl mx-auto px-4 pb-16" data-block="strip">
+  <div class="max-w-6xl mx-auto px-4 pb-10 md:pb-16" data-block="strip">
     <div class="flex justify-between items-end flex-wrap gap-3"><div><div class="kicker">من الميدان</div><h2 class="display text-3xl md:text-4xl mt-2 text-white">لقطات من فاعليات المؤسسة</h2></div><a href="#media" data-open="gallery" class="btn-ghost">معرض الصور الكامل</a></div>
     <div id="strip" class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8"></div>
   </div>
-  <div class="max-w-6xl mx-auto px-4 pb-16" data-block="word"><div class="card p-6 md:p-8 flex flex-col md:flex-row gap-6 items-center">
+  <div class="max-w-6xl mx-auto px-4 pb-10 md:pb-16" data-block="word"><div class="card p-6 md:p-8 flex flex-col md:flex-row gap-6 items-center">
     <figure class="shrink-0 w-40"><img data-img="chairman" src="assets/chairman.jpg" alt="Chairman" class="rounded-2xl border border-yellow-700 aspect-[4/5] object-cover"></figure>
     <div><span class="btn-ghost text-sm py-1">كلمة رئيس المؤسسة</span><p data-bind="chairmanWord" class="clamp mt-4 leading-8 text-gray-300"></p><b class="display text-xl text-yellow-500 block mt-3" data-bind="chairmanName"></b><small class="muted" data-bind="chairmanTitle"></small></div>
   </div></div>
   <div id="custom-home"></div>
-  <div class="max-w-6xl mx-auto px-4 pb-16" data-block="cta"><div class="cta p-8 flex flex-col md:flex-row justify-between items-center gap-5">
+  <div class="max-w-6xl mx-auto px-4 pb-10 md:pb-16" data-block="cta"><div class="cta p-8 flex flex-col md:flex-row justify-between items-center gap-5">
     <div><h2 class="display text-2xl md:text-3xl text-white" data-bind="ctaTitle"></h2><p class="muted mt-2" data-bind="ctaSub"></p></div>
     <div class="flex gap-3 shrink-0"><a href="#services" class="btn">تقديم شكوى</a><a href="#contact" class="btn-ghost">اتصل بنا</a></div>
   </div></div>
@@ -153,8 +154,8 @@ body#site{background:var(--bg);color:var(--text);font-family:Tajawal,sans-serif;
 
 <!-- عن المؤسسة -->
 <section role="tabpanel" data-view="about" class="hidden">
-  <div class="banner"><div class="max-w-6xl mx-auto px-4 py-12"><div class="crumbs muted text-sm"><a href="#home">الرئيسية</a><span> / </span><span data-bind="about_title"></span></div><div class="kicker mt-5">عن المؤسسة</div><h1 class="display text-3xl md:text-5xl mt-2 text-white leading-tight" data-bind="about_title"></h1><div class="gold-line"></div><p class="muted mt-4 max-w-3xl leading-8" data-bind="about_sub"></p></div></div>
-  <div class="max-w-6xl mx-auto px-4 py-14 space-y-16">
+  <div class="banner"><div class="max-w-6xl mx-auto px-4 py-8 md:py-12"><div class="crumbs muted text-sm"><a href="#home">الرئيسية</a><span> / </span><span data-bind="about_title"></span></div><div class="kicker mt-5">عن المؤسسة</div><h1 class="display text-3xl md:text-5xl mt-2 text-white leading-tight" data-bind="about_title"></h1><div class="gold-line"></div><p class="muted mt-4 max-w-3xl leading-8" data-bind="about_sub"></p></div></div>
+  <div class="max-w-6xl mx-auto px-4 py-10 md:py-14 space-y-10 md:space-y-16">
     <div class="card p-6 md:p-8 flex flex-col md:flex-row gap-6 items-start">
       <figure class="shrink-0 w-44"><img data-img="chairman" src="assets/chairman.jpg" alt="Chairman" class="rounded-2xl border border-yellow-700 aspect-[4/5] object-cover"></figure>
       <div><div class="kicker">كلمة رئيس المؤسسة</div><h2 class="display text-3xl mt-2 text-white">من القلب… إلى أبناء السويس</h2>
@@ -179,8 +180,8 @@ body#site{background:var(--bg);color:var(--text);font-family:Tajawal,sans-serif;
 
 <!-- الخدمات -->
 <section role="tabpanel" data-view="services" class="hidden">
-  <div class="banner"><div class="max-w-6xl mx-auto px-4 py-12"><div class="crumbs muted text-sm"><a href="#home">الرئيسية</a><span> / </span><span data-bind="services_title"></span></div><div class="kicker mt-5">الخدمات والدعم المجتمعي</div><h1 class="display text-3xl md:text-5xl mt-2 text-white leading-tight" data-bind="services_title"></h1><div class="gold-line"></div><p class="muted mt-4 max-w-3xl leading-8" data-bind="services_sub"></p></div></div>
-  <div class="max-w-6xl mx-auto px-4 py-14 space-y-16">
+  <div class="banner"><div class="max-w-6xl mx-auto px-4 py-8 md:py-12"><div class="crumbs muted text-sm"><a href="#home">الرئيسية</a><span> / </span><span data-bind="services_title"></span></div><div class="kicker mt-5">الخدمات والدعم المجتمعي</div><h1 class="display text-3xl md:text-5xl mt-2 text-white leading-tight" data-bind="services_title"></h1><div class="gold-line"></div><p class="muted mt-4 max-w-3xl leading-8" data-bind="services_sub"></p></div></div>
+  <div class="max-w-6xl mx-auto px-4 py-10 md:py-14 space-y-10 md:space-y-16">
     <div><div class="center text-center"><div class="kicker">آلية العمل</div><h2 class="display text-3xl md:text-4xl mt-2 text-white">كيف تصل شكواك إلى الحل؟</h2><div class="gold-line"></div></div><div id="steps" class="grid md:grid-cols-2 lg:grid-cols-4 gap-5 mt-8"></div></div>
     <div><div class="center text-center"><div class="kicker">الخدمات المتاحة</div><h2 class="display text-3xl md:text-4xl mt-2 text-white">ما الذي نقدمه لأبناء السويس؟</h2><div class="gold-line"></div></div><div id="services-grid2" class="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mt-8 text-start"></div></div>
     <div><div class="center text-center"><div class="kicker">التقديم الإلكتروني</div><h2 class="display text-3xl md:text-4xl mt-2 text-white">قدّم شكواك أو طلب انضمامك</h2><div class="gold-line"></div><p class="muted mt-3 max-w-2xl mx-auto leading-8">جميع الطلبات تُراجع من الإدارة القانونية والمكتب التنفيذي للمؤسسة، وتُحفظ بياناتك بسرية تامة.</p></div>
@@ -188,7 +189,7 @@ body#site{background:var(--bg);color:var(--text);font-family:Tajawal,sans-serif;
         <div class="card p-6"><div class="flex flex-wrap gap-2 mb-5"><button class="seg active" data-ftab="consultation">طلب استشارة</button><button class="seg" data-ftab="complaint">شكوى أو مقترح</button><button class="seg" data-ftab="membership">عضوية وتطوع</button></div>
           <div data-form="consultation" data-ftab="consultation"></div><div data-form="complaint" data-ftab="complaint" class="hidden"></div><div data-form="membership" data-ftab="membership" class="hidden"></div></div>
         <div class="space-y-5">
-          <div class="card p-6"><h3 class="display text-xl text-white">ماذا يحدث بعد الإرسال؟</h3><ul class="mt-3 space-y-3 text-sm muted leading-7"><li class="chip">تُسجَّل الشكوى فورًا في سجل المؤسسة ولا يمكن تعديل حالتها إلا من الإدارة المختصة.</li><li class="chip">تُراجع الحالات ذات الطابع العاجل بشكل أولوي بالتنسيق مع لجنة الحي.</li><li class="chip">يمكنك الاطلاع على طلباتك المرسلة من هذا الجهاز في قائمة «طلباتي المسجلة».</li><li class="chip">للمساعدة الفورية يمكنك التواصل معنا عبر واتساب أو الهاتف خلال ساعات العمل.</li></ul><div id="info-s" class="mt-3 space-y-1 text-sm"></div></div>
+          <div class="card p-6"><h3 class="display text-xl text-white">ماذا يحدث بعد الإرسال؟</h3><ul class="mt-3 space-y-3 text-sm muted leading-7"><li class="chip">تُسجَّل الشكوى فورًا في سجل المؤسسة ولا يمكن تعديل حالتها إلا من الإدارة المختصة.</li><li class="chip">تُراجع الحالات ذات الطابع العاجل بشكل أولوي بالتنسيق مع لجنة الحي.</li><li class="chip">يمكنك الاطلاع على طلباتك المرسلة من هذا الجهاز في قائمة «طلباتي المسجلة».</li><li class="chip">للمساعدة الفورية يمكنك التواصل معنا عبر واتساب أو الهاتف خلال ساعات العمل.</li></ul><div id="info-s" class="mt-3 space-y-1 text-sm"></div><div id="chat-s" class="flex flex-wrap gap-2 mt-3"></div></div>
           <div class="card p-6"><h3 class="display text-xl text-white">طلباتي المسجلة</h3><ul id="mine" class="mt-3 space-y-3"></ul><p class="muted text-xs mt-3">تظهر هنا الطلبات المرسلة من هذا الجهاز فقط، ولا يراها غيرك.</p></div>
         </div>
       </div></div>
@@ -198,7 +199,7 @@ body#site{background:var(--bg);color:var(--text);font-family:Tajawal,sans-serif;
 
 <!-- المركز الإعلامي -->
 <section role="tabpanel" data-view="media" class="hidden">
-  <div class="banner"><div class="max-w-6xl mx-auto px-4 py-12"><div class="crumbs muted text-sm"><a href="#home">الرئيسية</a><span> / </span><span data-bind="media_title"></span></div><div class="kicker mt-5">المركز الإعلامي</div><h1 class="display text-3xl md:text-5xl mt-2 text-white leading-tight" data-bind="media_title"></h1><div class="gold-line"></div><p class="muted mt-4 max-w-3xl leading-8" data-bind="media_sub"></p></div></div>
+  <div class="banner"><div class="max-w-6xl mx-auto px-4 py-8 md:py-12"><div class="crumbs muted text-sm"><a href="#home">الرئيسية</a><span> / </span><span data-bind="media_title"></span></div><div class="kicker mt-5">المركز الإعلامي</div><h1 class="display text-3xl md:text-5xl mt-2 text-white leading-tight" data-bind="media_title"></h1><div class="gold-line"></div><p class="muted mt-4 max-w-3xl leading-8" data-bind="media_sub"></p></div></div>
   <div class="max-w-6xl mx-auto px-4 py-10 space-y-8">
     <div class="flex flex-wrap gap-3"><button class="seg active" data-mtab="news">الأخبار <small id="c-news">0</small></button><button class="seg" data-mtab="press">البيانات الصحفية <small id="c-press">0</small></button><button class="seg" data-mtab="gallery">معرض الصور والفيديو <small id="c-gallery">0</small></button></div>
     <div data-mtab="news"><div id="news" class="grid md:grid-cols-3 gap-5"></div></div>
@@ -210,14 +211,14 @@ body#site{background:var(--bg);color:var(--text);font-family:Tajawal,sans-serif;
 
 <!-- اتصل بنا -->
 <section role="tabpanel" data-view="contact" class="hidden">
-  <div class="banner"><div class="max-w-6xl mx-auto px-4 py-12"><div class="crumbs muted text-sm"><a href="#home">الرئيسية</a><span> / </span><span data-bind="contact_title"></span></div><div class="kicker mt-5">اتصل بنا</div><h1 class="display text-3xl md:text-5xl mt-2 text-white leading-tight" data-bind="contact_title"></h1><div class="gold-line"></div><p class="muted mt-4 max-w-3xl leading-8" data-bind="contact_sub"></p></div></div>
-  <div class="max-w-6xl mx-auto px-4 py-12 space-y-8">
+  <div class="banner"><div class="max-w-6xl mx-auto px-4 py-8 md:py-12"><div class="crumbs muted text-sm"><a href="#home">الرئيسية</a><span> / </span><span data-bind="contact_title"></span></div><div class="kicker mt-5">اتصل بنا</div><h1 class="display text-3xl md:text-5xl mt-2 text-white leading-tight" data-bind="contact_title"></h1><div class="gold-line"></div><p class="muted mt-4 max-w-3xl leading-8" data-bind="contact_sub"></p></div></div>
+  <div class="max-w-6xl mx-auto px-4 py-8 md:py-12 space-y-8">
     <div id="contact-cards" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
     <div class="grid lg:grid-cols-2 gap-6 items-start">
       <div class="card p-6"><div class="kicker mb-1">نموذج التواصل</div><h2 class="display text-2xl text-white mb-4">أرسل رسالتك مباشرة إلى المؤسسة</h2><div data-form="contact"></div></div>
       <div class="space-y-5">
         <div class="card p-4"><h3 class="display text-xl text-white mb-3 px-2">موقع المقر على الخريطة</h3><iframe id="map" title="Map" class="w-full h-72 rounded-xl border border-yellow-900/50" loading="lazy" referrerpolicy="no-referrer"></iframe></div>
-        <div class="card p-6"><h3 class="display text-xl text-white">بيانات المؤسسة</h3><ul class="mt-3 space-y-2 text-sm text-gray-300"><li>المؤسسة المصرية الوطنية والتنمية وحقوق الإنسان — محافظة السويس</li><li>مشهرة برقم 810 لسنة 2024</li></ul><div id="social" class="flex flex-wrap gap-4 mt-4 text-yellow-500 text-sm"></div></div>
+        <div class="card p-6"><h3 class="display text-xl text-white">بيانات المؤسسة</h3><ul class="mt-3 space-y-2 text-sm text-gray-300"><li>المؤسسة المصرية الوطنية والتنمية وحقوق الإنسان — محافظة السويس</li><li>مشهرة برقم 810 لسنة 2024</li></ul><div id="social" class="flex flex-wrap gap-4 mt-4 text-yellow-500 text-sm"></div><div id="chat-c" class="flex flex-wrap gap-2 mt-4"></div></div>
       </div>
     </div>
   </div>
@@ -227,15 +228,15 @@ body#site{background:var(--bg);color:var(--text);font-family:Tajawal,sans-serif;
 
 <footer class="footer mt-8">
   <div class="flag-bar"></div>
-  <div class="max-w-6xl mx-auto px-4 py-12 grid md:grid-cols-3 gap-8">
+  <div class="max-w-6xl mx-auto px-4 py-8 md:py-12 grid md:grid-cols-3 gap-8">
     <div><div class="flex items-center gap-3"><img data-img="logo" src="assets/logo.jpg" alt="" class="h-14 w-14 rounded-full border border-yellow-600"><b class="display text-lg text-white">المؤسسة المصرية الوطنية والتنمية وحقوق الإنسان</b></div><p data-bind="intro" class="muted text-sm leading-7 mt-4"></p></div>
     <div><h4 class="display text-lg text-white mb-3">روابط سريعة</h4><ul class="space-y-2 text-sm muted"><li><a href="#home">الرئيسية</a></li><li><a href="#about">عن المؤسسة</a></li><li><a href="#services">الخدمات والدعم</a></li><li><a href="#media">المركز الإعلامي</a></li><li><a href="#contact">اتصل بنا</a></li></ul></div>
-    <div><h4 class="display text-lg text-white mb-3">بيانات التواصل</h4><div id="f-info" class="space-y-2 text-sm muted"></div><div id="f-social" class="flex flex-wrap gap-4 mt-4 text-yellow-500 text-sm"></div></div>
+    <div><h4 class="display text-lg text-white mb-3">بيانات التواصل</h4><div id="f-info" class="space-y-2 text-sm muted"></div><div id="f-social" class="flex flex-wrap gap-4 mt-4 text-yellow-500 text-sm"></div><div id="chat-f" class="flex flex-wrap gap-2 mt-4"></div></div>
   </div>
   <div class="max-w-6xl mx-auto px-4 pb-8 text-xs muted flex flex-wrap justify-between gap-3 border-t border-yellow-900/30 pt-5">
     <span data-bind="copyright"></span>
     <span>بالضغط على «انضم إلينا» وتسجيل الدخول بحساب Gmail فإنك توافق على حفظ اسمك وبريدك لإرسال أخبار المؤسسة، ويمكنك الخروج في أي وقت.</span>
-    <a href="admin.html" class="text-yellow-500">دخول الإدارة</a>
+    <a href="admin.html" class="opacity-40 hover:opacity-100 transition">دخول الإدارة</a>
   </div>
 </footer>
 <script type="module" src="app.js"></script>
